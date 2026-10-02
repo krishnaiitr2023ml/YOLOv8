@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>YOLO Live Camera Object Detection</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Computer Vision Demo</div>
+        <h1>YOLO Live Object Detection</h1>
+        <p>Turn on the browser camera and detect objects continuously in real time.</p>
+      </div>
+      <div class="model-pill">YOLOv8n • COCO</div>
+    </header>
+
+    <section class="workspace">
+      <div class="camera-card">
+        <div class="camera-head">
+          <div>
+            <h2>Live Camera</h2>
+            <span id="cameraStatus" class="status offline">Camera off</span>
+          </div>
+          <div class="actions">
+            <button id="startBtn" class="primary">Start Camera</button>
+            <button id="stopBtn" class="secondary" disabled>Stop</button>
+          </div>
+        </div>
+
+        <div class="video-wrap">
+          <video id="video" autoplay playsinline muted></video>
+          <canvas id="overlay"></canvas>
+          <div id="cameraPlaceholder" class="placeholder">
+            <div class="camera-icon">●</div>
+            <h3>Camera is currently off</h3>
+            <p>Click “Start Camera” and allow camera permission in your browser.</p>
+          </div>
+        </div>
+
+        <canvas id="captureCanvas" class="hidden"></canvas>
+
+        <div class="camera-footer">
+          <span id="detectStatus">Waiting for camera…</span>
+          <span>Detection interval: 700 ms</span>
+        </div>
+      </div>
+
+      <aside class="results-card">
+        <div class="results-head">
+          <div>
+            <div class="section-label">Live predictions</div>
+            <h2>Detected Objects</h2>
+          </div>
+          <div id="objectCount" class="count-badge">0</div>
+        </div>
+        <div id="resultsList" class="results-list">
+          <div class="empty-state">No objects detected yet.</div>
+        </div>
+        <div class="explain">
+          <h3>How it works</h3>
+          <ol>
+            <li>The browser captures a camera frame.</li>
+            <li>The frame is sent to the FastAPI backend.</li>
+            <li>YOLO detects objects and returns bounding boxes.</li>
+            <li>The browser draws the boxes over the live video.</li>
+          </ol>
+        </div>
+      </aside>
+    </section>
+
+    <section class="architecture">
+      <div><span>Camera</span><b>→</b><span>JPEG frame</span><b>→</b><span>FastAPI</span><b>→</b><span>YOLOv8n</span><b>→</b><span>Boxes + labels</span></div>
+    </section>
+  </main>
+  <script src="/js/script.js"></script>
+</body>
+</html>
