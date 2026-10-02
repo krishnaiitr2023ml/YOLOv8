@@ -4,18 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111827">
-  <title>YOLO Live Camera Object Detection</title>
+  <title>TensorFlow Live Object Detection</title>
   <link rel="stylesheet" href="/css/style.css">
+
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+
+  <!-- COCO-SSD pretrained detector -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 </head>
 <body>
   <main class="shell">
     <header class="topbar">
       <div>
-        <div class="eyebrow">Computer Vision Demo</div>
-        <h1>YOLO Live Object Detection</h1>
-        <p>Turn on the browser camera and detect objects continuously in real time.</p>
+        <div class="eyebrow">TensorFlow Computer Vision Demo</div>
+        <h1>Live Camera Object Detection</h1>
+        <p>Object detection runs directly in your browser using TensorFlow.js.</p>
       </div>
-      <div class="model-pill">YOLOv8n • COCO</div>
+      <div class="model-pill">TensorFlow.js • COCO-SSD</div>
     </header>
 
     <section class="workspace">
@@ -25,6 +31,7 @@
             <h2>Live Camera</h2>
             <span id="cameraStatus" class="status offline">Camera off</span>
           </div>
+
           <div class="actions">
             <button id="startBtn" class="primary">Start Camera</button>
             <button id="stopBtn" class="secondary" disabled>Stop</button>
@@ -34,18 +41,17 @@
         <div class="video-wrap">
           <video id="video" autoplay playsinline muted></video>
           <canvas id="overlay"></canvas>
-          <div id="cameraPlaceholder" class="placeholder">
+
+          <div id="placeholder" class="placeholder">
             <div class="camera-icon">●</div>
             <h3>Camera is currently off</h3>
-            <p>Click “Start Camera” and allow camera permission in your browser.</p>
+            <p>Click “Start Camera” and allow camera permission.</p>
           </div>
         </div>
 
-        <canvas id="captureCanvas" class="hidden"></canvas>
-
         <div class="camera-footer">
-          <span id="detectStatus">Waiting for camera…</span>
-          <span>Detection interval: 700 ms</span>
+          <span id="detectStatus">Loading TensorFlow model…</span>
+          <span id="fpsInfo">Inference runs in browser</span>
         </div>
       </div>
 
@@ -57,25 +63,36 @@
           </div>
           <div id="objectCount" class="count-badge">0</div>
         </div>
+
         <div id="resultsList" class="results-list">
-          <div class="empty-state">No objects detected yet.</div>
+          <div class="empty-state">Model is loading…</div>
         </div>
+
         <div class="explain">
           <h3>How it works</h3>
           <ol>
-            <li>The browser captures a camera frame.</li>
-            <li>The frame is sent to the FastAPI backend.</li>
-            <li>YOLO detects objects and returns bounding boxes.</li>
-            <li>The browser draws the boxes over the live video.</li>
+            <li>The browser opens your camera.</li>
+            <li>TensorFlow.js loads the pretrained COCO-SSD model.</li>
+            <li>Each video frame is analyzed locally in your browser.</li>
+            <li>Bounding boxes and confidence scores are drawn live.</li>
           </ol>
         </div>
       </aside>
     </section>
 
     <section class="architecture">
-      <div><span>Camera</span><b>→</b><span>JPEG frame</span><b>→</b><span>FastAPI</span><b>→</b><span>YOLOv8n</span><b>→</b><span>Boxes + labels</span></div>
+      <div>
+        <span>Camera</span>
+        <b>→</b>
+        <span>TensorFlow.js</span>
+        <b>→</b>
+        <span>COCO-SSD</span>
+        <b>→</b>
+        <span>Bounding Boxes</span>
+      </div>
     </section>
   </main>
+
   <script src="/js/script.js"></script>
 </body>
 </html>
